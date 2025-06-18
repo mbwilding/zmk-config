@@ -28,6 +28,7 @@
               zephyr.pythonEnv
               (zephyr.sdk-0_16.override {targets = ["arm-zephyr-eabi"];})
 
+              pkgs.git
               pkgs.cmake
               pkgs.dtc
               pkgs.ninja

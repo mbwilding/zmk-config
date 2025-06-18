@@ -25,10 +25,17 @@ The state of the entire firmware is pinned in my `west`
   [zmk-helpers](https://github.com/urob/zmk-helpers)
 - Fully automated, nix-powered [local build environment](#local-build-environment)
 
-![](draw/keymap.png)
-([Click here](https://raw.githubusercontent.com/urob/zmk-config/refs/heads/main/draw/base.svg)
-for a breakdown by layer - powered by
-[keymap-drawer](https://github.com/caksoylar/keymap-drawer).)
+## Layout
+
+Images powered by: [keymap-drawer](https://github.com/caksoylar/keymap-drawer)
+
+### Base
+
+![](draw/base.svg)
+
+### Combos
+
+![](draw/combos.svg)
 
 ## Timeless homerow mods
 

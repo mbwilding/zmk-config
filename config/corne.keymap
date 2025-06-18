@@ -1,3 +1,4 @@
+#define LH2
 #define CONFIG_WIRELESS
 #define ZMK_BASE_LAYER(name, LT, RT, LM, RM, LB, RB, LH, RH)                   \
     ZMK_LAYER(                                                                 \

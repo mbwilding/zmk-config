@@ -84,9 +84,18 @@ clean-nix:
 draw:
     #!/usr/bin/env bash
     set -euo pipefail
-    keymap -c "{{ draw }}/config.yaml" parse -z "{{ config }}/base.keymap" --virtual-layers Combos >"{{ draw }}/base.yaml"
-    yq -Yi '.combos.[].l = ["Combos"]' "{{ draw }}/base.yaml"
-    keymap -c "{{ draw }}/config.yaml" draw "{{ draw }}/base.yaml" -k "ferris/sweep" >"{{ draw }}/base.svg"
+
+    draw_config="{{ draw }}/config.yaml"
+    base_yaml="{{ draw }}/base.yaml"
+    combos_svg="{{ draw }}/combos.svg"
+    base_svg="{{ draw }}/base.svg"
+    keyboard="crkbd/rev4_1/mini"
+    layout="LAYOUT_split_3x5_3"
+
+    keymap -c "$draw_config" parse --zmk-keymap "{{ config }}/base.keymap" --virtual-layers Combos >"$base_yaml"
+    keymap -c "$draw_config" draw "$base_yaml" --zmk-keyboard $keyboard --layout-name $layout >"{{ draw }}/combos.svg"
+    yq -Yi '.combos.[].l = ["Combos"]' "$base_yaml"
+    keymap -c "$draw_config" draw "$base_yaml" --zmk-keyboard $keyboard --layout-name $layout >"{{ draw }}/base.svg"
 
 # initialize west
 init:

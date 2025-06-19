@@ -163,6 +163,7 @@ parse_config:
     SINGLE_QUOTE: "'"
     SLASH: /
     SQT: "'"
+    QUOT: "'"
     STAR: "*"
     TILDE: "~"
     TILDE2: "~"

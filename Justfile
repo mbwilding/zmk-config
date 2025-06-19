@@ -58,7 +58,7 @@ _build_single $board $shield $snippet *west_args:
     fi
 
 # build firmware for matching targets
-build expr *west_args: _parse_combos
+build-specific expr *west_args: _parse_combos
     #!/usr/bin/env bash
     set -euo pipefail
     targets=$(just _parse_targets {{ expr }})
@@ -68,6 +68,16 @@ build expr *west_args: _parse_combos
         just _build_single "$board" "$shield" "$snippet" {{ west_args }}
     done
 
+# Build
+build: _parse_combos
+    #!/usr/bin/env bash
+    set -euo pipefail
+    targets=$(just _parse_targets corne)
+
+    echo "$targets" | while IFS=, read -r board shield snippet; do
+        just _build_single "$board" "$shield" "$snippet"
+    done
+
 # Flash
 flash $side:
     #!/usr/bin/env bash
@@ -75,7 +85,7 @@ flash $side:
 
     MOUNTPOINT=$(ls -d /run/media/$USER/NICE_NANO* 2>/dev/null | head -n 1)
     if [ -z "$MOUNTPOINT" ]; then
-      echo "Device not found. Put the Nice!Nano v2 in bootloader mode." >&2
+      echo "Device not found. Put the device in bootloader mode." >&2
       exit 1
     fi
     cp "{{ out }}/corne_$side-nice_nano_v2.uf2" "$MOUNTPOINT/"
@@ -98,6 +108,7 @@ draw:
     #!/usr/bin/env bash
     set -euo pipefail
 
+    keymap="corne"
     draw_config="{{ draw }}/config.yaml"
     base_yaml="{{ draw }}/base.yaml"
     combos_svg="{{ draw }}/combos.svg"
@@ -105,7 +116,7 @@ draw:
     keyboard="crkbd/rev4_1/mini"
     layout="LAYOUT_split_3x5_3"
 
-    keymap -c "$draw_config" parse --zmk-keymap "{{ config }}/base.keymap" --virtual-layers Combos >"$base_yaml"
+    keymap -c "$draw_config" parse --zmk-keymap "{{ config }}/$keymap.keymap" --virtual-layers Combos >"$base_yaml"
     keymap -c "$draw_config" draw "$base_yaml" --zmk-keyboard $keyboard --layout-name $layout >"{{ draw }}/combos.svg"
     yq -Yi '.combos.[].l = ["Combos"]' "$base_yaml"
     keymap -c "$draw_config" draw "$base_yaml" --zmk-keyboard $keyboard --layout-name $layout >"{{ draw }}/base.svg"

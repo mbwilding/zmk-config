@@ -68,6 +68,19 @@ build expr *west_args: _parse_combos
         just _build_single "$board" "$shield" "$snippet" {{ west_args }}
     done
 
+# Flash
+flash $side:
+    #!/usr/bin/env bash
+    set -uo pipefail
+
+    MOUNTPOINT=$(ls -d /run/media/$USER/NICE_NANO* 2>/dev/null | head -n 1)
+    if [ -z "$MOUNTPOINT" ]; then
+      echo "Device not found. Put the Nice!Nano v2 in bootloader mode." >&2
+      exit 1
+    fi
+    cp "{{ out }}/corne_$side-nice_nano_v2.uf2" "$MOUNTPOINT/"
+    echo "Copied to $MOUNTPOINT"
+
 # clear build cache and artifacts
 clean:
     rm -rf {{ build }} {{ out }}

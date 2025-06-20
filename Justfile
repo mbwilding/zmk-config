@@ -88,13 +88,27 @@ flash $side:
       exit 1
     fi
 
-    MOUNTPOINT=$(ls -d /run/media/$USER/NICENANO* 2>/dev/null | head -n 1)
+    if [[ "$(uname)" == "Darwin" ]]; then
+        MOUNTPOINT="/Volumes/NICENANO"
+    else
+        MOUNTPOINT=$(ls -d /run/media/$USER/NICENANO* 2>/dev/null | head -n 1)
+    fi
+
     if [ -z "$MOUNTPOINT" ]; then
-      echo "Device not found. Put the device in bootloader mode." >&2
+      echo "Device not found: '$MOUNTPOINT' is empty." >&2
       exit 1
     fi
-    cp "{{ out }}/corne_$side+nice_view_adapter+nice_view-nice_nano_v2.uf2" "$MOUNTPOINT/"
-    echo "Copied to $MOUNTPOINT"
+    if [ ! -d "$MOUNTPOINT" ]; then
+      echo "Device not found or not a directory: '$MOUNTPOINT' does not exist or is not a directory." >&2
+      exit 1
+    fi
+    if [ ! -w "$MOUNTPOINT" ]; then
+      echo "Device not writeable: no write permission on '$MOUNTPOINT'." >&2
+      exit 1
+    fi
+
+    cp "{{ out }}/corne_$side+nice_view_adapter+nice_view-nice_nano_v2.uf2" "$MOUNTPOINT/" 2>/dev/null
+    echo "Flash complete"
 
 # clear build cache and artifacts
 clean:

@@ -121,9 +121,12 @@ draw:
     keyboard="crkbd/rev4_1/mini"
     layout="LAYOUT_split_3x5_3"
 
-    keymap -c "$draw_config" parse --zmk-keymap "{{ config }}/$keymap.keymap" --virtual-layers Combos >"$base_yaml"
-    keymap -c "$draw_config" draw "$base_yaml" --zmk-keyboard $keyboard --layout-name $layout >"{{ draw }}/combos.svg"
-    yq -Yi '.combos.[].l = ["Combos"]' "$base_yaml"
+    # keymap -c "$draw_config" parse --zmk-keymap "{{ config }}/$keymap.keymap" --virtual-layers Combos >"$base_yaml"
+    # keymap -c "$draw_config" draw "$base_yaml" --zmk-keyboard $keyboard --layout-name $layout >"{{ draw }}/combos.svg"
+    # yq -Yi '.combos.[].l = ["Combos"]' "$base_yaml"
+    # keymap -c "$draw_config" draw "$base_yaml" --zmk-keyboard $keyboard --layout-name $layout >"{{ draw }}/base.svg"
+
+    keymap -c "$draw_config" parse --zmk-keymap "{{ config }}/$keymap.keymap" >"$base_yaml"
     keymap -c "$draw_config" draw "$base_yaml" --zmk-keyboard $keyboard --layout-name $layout >"{{ draw }}/base.svg"
 
 # initialize west

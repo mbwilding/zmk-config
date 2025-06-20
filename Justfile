@@ -83,7 +83,12 @@ flash $side:
     #!/usr/bin/env bash
     set -uo pipefail
 
-    MOUNTPOINT=$(ls -d /run/media/$USER/NICE_NANO* 2>/dev/null | head -n 1)
+    if [ "$side" != "left" ] && [ "$side" != "right" ]; then
+      echo "Argument should be left or right." >&2
+      exit 1
+    fi
+
+    MOUNTPOINT=$(ls -d /run/media/$USER/NICENANO* 2>/dev/null | head -n 1)
     if [ -z "$MOUNTPOINT" ]; then
       echo "Device not found. Put the device in bootloader mode." >&2
       exit 1

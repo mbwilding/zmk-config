@@ -93,7 +93,7 @@ flash $side:
       echo "Device not found. Put the device in bootloader mode." >&2
       exit 1
     fi
-    cp "{{ out }}/corne_$side-nice_nano_v2.uf2" "$MOUNTPOINT/"
+    cp "{{ out }}/corne_$side+nice_view_adapter+nice_view-nice_nano_v2.uf2" "$MOUNTPOINT/"
     echo "Copied to $MOUNTPOINT"
 
 # clear build cache and artifacts

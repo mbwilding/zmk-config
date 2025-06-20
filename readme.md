@@ -27,15 +27,9 @@ The state of the entire firmware is pinned in my `west`
 
 ## Layout
 
-Images powered by: [keymap-drawer](https://github.com/caksoylar/keymap-drawer)
-
-### Base
+> Images powered by: [keymap-drawer](https://github.com/caksoylar/keymap-drawer)
 
 ![](draw/base.svg)
-
-### Combos
-
-![](draw/combos.svg)
 
 ## Timeless homerow mods
 

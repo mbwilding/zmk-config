@@ -6,4 +6,5 @@ modules
 firmware
 zephyr
 zmk
+zmk-nice-oled
 draw/base.yaml

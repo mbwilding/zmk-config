@@ -3,7 +3,7 @@ parse_config:
     - "modules/zmk/helpers/include"
 
   zmk_preamble: |
-    #include <zmk-helpers/key-labels/34.h>
+    #include <zmk-helpers/key-labels/36.h>
     #define CONFIG_WIRELESS
 
   raw_binding_map:
@@ -37,8 +37,8 @@ parse_config:
     "&hm_combo_ldrsh": Shift+Leader
     "&hm_combo_lpar": { "t": "(", "right": "<" }
     "&hm_combo_rpar": { "t": ")", "right": ">" }
-    "&kp LBKT": { "t": "[", "right": "{" }
-    "&kp RBKT": { "t": "]", "right": "}" }
+    "&kp LBKT": "["
+    "&kp RBKT": "]"
 
     "&mmv MOVE_UP": Mouse ↑
     "&mmv MOVE_DOWN": Mouse ↓
@@ -77,6 +77,7 @@ parse_config:
     RGUI: Gui
     LSHFT: Shift
     RSHFT: Shift
+    GLOBE: 🌐
 
     BSPC: Bspc
     DEL: Del
@@ -163,6 +164,7 @@ parse_config:
     SINGLE_QUOTE: "'"
     SLASH: /
     SQT: "'"
+    QUOT: "'"
     STAR: "*"
     TILDE: "~"
     TILDE2: "~"
@@ -172,4 +174,4 @@ parse_config:
 draw_config:
   append_colon_to_layer_header: false
   dark_mode: auto
-  footer_text: "urob/zmk-config"
+  footer_text: "mbwilding/zmk-config"

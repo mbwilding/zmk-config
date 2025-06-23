@@ -26,12 +26,14 @@ manifest:
       url-base: https://github.com/urob
     - name: zmkfirmware
       url-base: https://github.com/zmkfirmware
+    # Support nice_oled and nice_epaper
+    - name: mctechnology17
+      url-base: https://github.com/mctechnology17
 
   projects:
     - name: zmk
       remote: zmkfirmware
       import: app/west.yml
-
     # ZMK modules
     - name: zmk-adaptive-key
       path: modules/zmk/adaptive-key
@@ -43,7 +45,6 @@ manifest:
       path: modules/zmk/leader-key
     - name: zmk-tri-state
       path: modules/zmk/tri-state
-
     # Temporarily overload Zephyr until
     # https://github.com/zmkfirmware/zephyr/pull/40 is merged.
     - name: zephyr
@@ -55,10 +56,13 @@ manifest:
         name-allowlist:
           - cmsis
           - hal_nordic
-          - hal_rpi_pico
-          - hal_stm32
           - lvgl
           - tinycrypt
+
+    # Support nice_oled and nice_epaper
+    - name: zmk-nice-oled
+      remote: mctechnology17
+      revision: main
 
   self:
     path: config

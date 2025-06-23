@@ -58,7 +58,7 @@ _build_single $board $shield $snippet *west_args:
     fi
 
 # build firmware for matching targets
-build expr *west_args: _parse_combos
+build-specific expr *west_args: _parse_combos
     #!/usr/bin/env bash
     set -euo pipefail
     targets=$(just _parse_targets {{ expr }})
@@ -67,6 +67,48 @@ build expr *west_args: _parse_combos
     echo "$targets" | while IFS=, read -r board shield snippet; do
         just _build_single "$board" "$shield" "$snippet" {{ west_args }}
     done
+
+# Build
+build: _parse_combos
+    #!/usr/bin/env bash
+    set -euo pipefail
+    targets=$(just _parse_targets corne)
+
+    echo "$targets" | while IFS=, read -r board shield snippet; do
+        just _build_single "$board" "$shield" "$snippet"
+    done
+
+# Flash
+flash $side:
+    #!/usr/bin/env bash
+    set -uo pipefail
+
+    if [ "$side" != "left" ] && [ "$side" != "right" ]; then
+      echo "Argument should be left or right." >&2
+      exit 1
+    fi
+
+    if [[ "$(uname)" == "Darwin" ]]; then
+        MOUNTPOINT="/Volumes/NICENANO"
+    else
+        MOUNTPOINT=$(ls -d /run/media/$USER/NICENANO* 2>/dev/null | head -n 1)
+    fi
+
+    if [ -z "$MOUNTPOINT" ]; then
+      echo "Device not found: '$MOUNTPOINT' is empty." >&2
+      exit 1
+    fi
+    if [ ! -d "$MOUNTPOINT" ]; then
+      echo "Device not found or not a directory: '$MOUNTPOINT' does not exist or is not a directory." >&2
+      exit 1
+    fi
+    if [ ! -w "$MOUNTPOINT" ]; then
+      echo "Device not writeable: no write permission on '$MOUNTPOINT'." >&2
+      exit 1
+    fi
+
+    cp "{{ out }}/corne_$side+nice_view_adapter+nice_view-nice_nano_v2.uf2" "$MOUNTPOINT/" 2>/dev/null
+    echo "Flash complete"
 
 # clear build cache and artifacts
 clean:
@@ -84,9 +126,22 @@ clean-nix:
 draw:
     #!/usr/bin/env bash
     set -euo pipefail
-    keymap -c "{{ draw }}/config.yaml" parse -z "{{ config }}/base.keymap" --virtual-layers Combos >"{{ draw }}/base.yaml"
-    yq -Yi '.combos.[].l = ["Combos"]' "{{ draw }}/base.yaml"
-    keymap -c "{{ draw }}/config.yaml" draw "{{ draw }}/base.yaml" -k "ferris/sweep" >"{{ draw }}/base.svg"
+
+    keymap="corne"
+    draw_config="{{ draw }}/config.yaml"
+    base_yaml="{{ draw }}/base.yaml"
+    combos_svg="{{ draw }}/combos.svg"
+    base_svg="{{ draw }}/base.svg"
+    keyboard="crkbd/rev4_1/mini"
+    layout="LAYOUT_split_3x5_3"
+
+    # keymap -c "$draw_config" parse --zmk-keymap "{{ config }}/$keymap.keymap" --virtual-layers Combos >"$base_yaml"
+    # keymap -c "$draw_config" draw "$base_yaml" --zmk-keyboard $keyboard --layout-name $layout >"{{ draw }}/combos.svg"
+    # yq -Yi '.combos.[].l = ["Combos"]' "$base_yaml"
+    # keymap -c "$draw_config" draw "$base_yaml" --zmk-keyboard $keyboard --layout-name $layout >"{{ draw }}/base.svg"
+
+    keymap -c "$draw_config" parse --zmk-keymap "{{ config }}/$keymap.keymap" >"$base_yaml"
+    keymap -c "$draw_config" draw "$base_yaml" --zmk-keyboard $keyboard --layout-name $layout >"{{ draw }}/base.svg"
 
 # initialize west
 init:

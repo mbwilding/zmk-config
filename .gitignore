@@ -1,3 +1,4 @@
+**/.DS_Store
 .build
 .direnv
 .west
@@ -5,4 +6,5 @@ modules
 firmware
 zephyr
 zmk
+zmk-nice-oled
 draw/base.yaml

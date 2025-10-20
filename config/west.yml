@@ -19,7 +19,7 @@
 manifest:
   defaults:
     remote: urob
-    revision: v0.2 # Pin everything to v0.2
+    revision: v0.3 # Pin everything to v0.3
 
   remotes:
     - name: urob
@@ -34,6 +34,7 @@ manifest:
     - name: zmk
       remote: zmkfirmware
       import: app/west.yml
+
     # ZMK modules
     - name: zmk-adaptive-key
       path: modules/zmk/adaptive-key
@@ -45,14 +46,16 @@ manifest:
       path: modules/zmk/leader-key
     - name: zmk-tri-state
       path: modules/zmk/tri-state
-    # Temporarily overload Zephyr until
-    # https://github.com/zmkfirmware/zephyr/pull/40 is merged.
+    - name: zmk-unicode
+      path: modules/zmk/unicode
+
+    # Only source necessary Zephyr modules. Remove this entire section to restore
+    # the default (needed for less common hardware).
     - name: zephyr
+      remote: zmkfirmware
       revision: v3.5.0+zmk-fixes
       clone-depth: 1
       import:
-        # Only enable most commonly used boards. For less common hardware one
-        # may need to enable additional modules.
         name-allowlist:
           - cmsis
           - hal_nordic

@@ -31,6 +31,7 @@
               pkgs.git
               pkgs.cmake
               pkgs.dtc
+              pkgs.gcc
               pkgs.ninja
 
               pkgs.just

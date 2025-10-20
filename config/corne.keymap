@@ -51,14 +51,19 @@
 #define KEYS_R RT0 RT1 RT2 RT3 RT4 RM0 RM1 RM2 RM3 RM4 RB0 RB1 RB2 RB3 RB4
 #define THUMBS LH2 LH1 LH0 RH0 RH1 RH2
 
-#define MAKE_HRM(NAME, HOLD, TAP, TRIGGER_POS)                                 \
-  ZMK_HOLD_TAP(NAME, bindings = <HOLD>, <TAP>; flavor = "balanced";            \
-               tapping-term-ms = <280>; quick-tap-ms = <QUICK_TAP_MS>;         \
-               require-prior-idle-ms = <123>; hold-trigger-on-release;         \
-               hold-trigger-key-positions = <TRIGGER_POS>;)
+#define MAKE_HRM(NAME, HOLD, TAP, TRIGGER_POS)     \
+  ZMK_HOLD_TAP(NAME,                               \
+      flavor = "balanced";                         \
+      tapping-term-ms = <280>;                     \
+      quick-tap-ms = <QUICK_TAP_MS>;               \
+      require-prior-idle-ms = <150>;               \
+      bindings = <HOLD>, <TAP>;                    \
+      hold-trigger-key-positions = <TRIGGER_POS>;  \
+      hold-trigger-on-release;                     \
+  )
 
-MAKE_HRM(hml, &kp, &kp, KEYS_L THUMBS) // Right-hand HRMs.
-MAKE_HRM(hmr, &kp, &kp, KEYS_R THUMBS) // Left-hand HRMs.
+MAKE_HRM(hml, &kp, &kp, KEYS_L THUMBS)
+MAKE_HRM(hmr, &kp, &kp, KEYS_R THUMBS)
 
 // Hack: Make HRM combos tap-only (cf, ZMK issue #544).
 #define ZMK_COMBO_8(NAME, TAP, POS, LAYERS, COMBO_MS, IDLE_MS, HOLD, SIDE)     \
@@ -193,7 +198,7 @@ MAKE_HRM(hmr, &kp, &kp, KEYS_R THUMBS) // Left-hand HRMs.
 ZMK_CONDITIONAL_LAYER(sys, SYM NUM, SYS) // SYM + NUM --> SYS.
 
 #ifndef ZMK_BASE_LAYER
-  #define ZMK_BASE_LAYER(name, LT, RT, LM, RM, LB, RB, LH, RH)                 \
+  #define ZMK_BASE_LAYER(name, LT, RT, LM, RM, LB, RB, LH, RH) \
       ZMK_LAYER(name, LT RT LM RM LB RB LH RH)
 #endif
 

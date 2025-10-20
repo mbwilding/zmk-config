@@ -38,17 +38,19 @@ build-specific expr *west_args:
 
     [[ -z $targets ]] && echo "No matching targets found. Aborting..." >&2 && exit 1
     echo "$targets" | while IFS=, read -r board shield snippet artifact; do
-        just _build_single "$board" "$shield" "$snippet" "$artifact" {{ west_args }}
+        just _build_single "$board" "$shield" "$snippet" "$artifact" {{ west_args }} &
     done
 
+    wait
+
 # Build
-build: _parse_combos
+build:
     #!/usr/bin/env bash
     set -euo pipefail
     targets=$(just _parse_targets corne)
 
-    echo "$targets" | while IFS=, read -r board shield snippet; do
-        just _build_single "$board" "$shield" "$snippet"
+    echo "$targets" | while IFS=, read -r board shield snippet artifact; do
+        just _build_single "$board" "$shield" "$snippet" "$artifact"
     done
 
 # Flash

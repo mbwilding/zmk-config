@@ -18,8 +18,8 @@ jobs:
         with:
           fetch-depth: 0 # Required for GitVersion
 
-      # - name: Install GitVersion
-      #   uses: gittools/actions/gitversion/setup@v4.1.0
+      - name: Install GitVersion
+        uses: gittools/actions/gitversion/setup@v4.1.0
 
       - name: Determine Version
         id: determine

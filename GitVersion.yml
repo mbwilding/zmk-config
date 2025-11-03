@@ -1,0 +1,46 @@
+mode: Mainline
+commit-message-incrementing: Enabled
+# Conventional Commits https://www.conventionalcommits.org/en/v1.0.0/
+no-bump-message: ^\b$
+# https://regex101.com/r/y7c7rw/2
+major-version-bump-message: "(major|release|BREAKING CHANGE)(\\([\\w\\s]+\\))?:.+"
+# https://regex101.com/r/Oqhi2m/7
+minor-version-bump-message: "(feat)(\\([\\w\\s]+\\))?:.+"
+# Match nothing
+assembly-versioning-scheme: MajorMinorPatch
+assembly-file-versioning-scheme: MajorMinorPatch
+
+continuous-delivery-fallback-tag: ''
+branches:
+    main:
+        # Mainline branch (e.g. trunk-based)
+        # https://martinfowler.com/articles/branching-patterns.html#mainline-integration
+        # Treats each commit as a feature (minor) increment to avoid manually incrementing the version.
+        increment: Minor
+    release:
+        # Release branch
+        # https://martinfowler.com/articles/branching-patterns.html#release-branch
+        # Used when stabilization of a release is required while mainline development continues.
+        # Any commits should be cherry-picked into the mainline.
+        # Treats each commit as a patch increment to avoid manually incrementing the version.
+        # Suggested branch name 'release/1.1'.
+        # NOTE: If the version is not specified in the branch name then the released version must be tagged manually.
+        # NOTE: The act of branching will increment the patch version for some reason. E.g. 1.1.0 will become 1.1.1.
+        increment: Patch
+        tag: ''
+        is-mainline: true
+    hotfix:
+        # Production hotfix branch
+        # https://martinfowler.com/articles/branching-patterns.html#hotfix-branch
+        # Used to hotfix a release already in production.
+        # Any commits should be cherry-picked into the mainline.
+        # Treats each commit as a patch increment to avoid manually incrementing the version.
+        # Identical to the release branch except for the naming convention.
+        # Preference is to use release branches.
+        # Suggested branch name 'hotfix/1.1'.
+        # NOTE: If the version is not specified in the branch name then the released version must be tagged manually.
+        # NOTE: The act of branching will increment the patch version for some reason. E.g. 1.1.0 will become 1.1.1.
+        increment: Patch
+        tag: ''
+        is-mainline: true
+        is-release-branch: true

@@ -3,9 +3,9 @@ name: Build ZMK firmware
 on:
   workflow_dispatch:
   push:
-    paths:
-      - config/**
-      - build.yaml
+    # paths:
+    #   - config/**
+    #   - build.yaml
     # TODO: Remove
     branches:
       - main

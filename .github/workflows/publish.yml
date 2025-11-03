@@ -33,6 +33,7 @@ jobs:
         run: |
           # sudo apt-get update
           sudo apt-get install -y just
+          pip3 install --user -U west
 
       - name: Build
         shell: bash

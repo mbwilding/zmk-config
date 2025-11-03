@@ -13,7 +13,7 @@ jobs:
   Publish:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout - Self
+      - name: Checkout
         uses: actions/checkout@v4
         with:
           fetch-depth: 0 # Required for GitVersion
@@ -31,12 +31,28 @@ jobs:
 
       - name: Install Dependencies
         run: |
-          # sudo apt-get update
-          sudo apt-get install -y just
+          set -eax
+
           pip3 install --user -U west
+
+      - name: Setup West
+        shell: bash
+        run: |
+          set -eax
+
+          west init -l config
+          west update --fetch-opt=--filter=blob:none
+          west zephyr-export
 
       - name: Build
         shell: bash
         run: |
-          just init
-          just build
+          set -eax
+
+          build_dir_base=".build"
+          board="nice_nano_v2"
+          shield_base="corne"
+          shield_extras="nice_view_adapter nice_epaper"
+
+          west build -s zmk/app -d $build_dir_base/left  -b $board $board -- -DZMK_CONFIG=config -DSHIELD="${shield_base}_left  $shield_extras"
+          west build -s zmk/app -d $build_dir_base/right -b $board $board -- -DZMK_CONFIG=config -DSHIELD="${shield_base}_right $shield_extras"

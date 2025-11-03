@@ -6,6 +6,9 @@ on:
     paths:
       - config/**
       - build.yaml
+    # TODO: Remove
+    branches:
+      - main
 
 jobs:
   build:
